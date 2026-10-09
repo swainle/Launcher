@@ -1,0 +1,11 @@
+# .NET build output
+**/bin/
+**/obj/
+
+# Local IDE state
+.vs/
+*.user
+*.suo
+
+**/publish.json
+**/launcher.json

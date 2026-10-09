@@ -1,0 +1,380 @@
+﻿<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:updater="clr-namespace:Launcher.Updater"
+        mc:Ignorable="d" d:DesignWidth="900" d:DesignHeight="850"
+        x:Class="Launcher.MainWindow"
+        Width="900" Height="850" MinWidth="900" MinHeight="600"
+        Background="#244C88" Title="Launcher" WindowStartupLocation="CenterScreen">
+    <Window.Styles>
+        <Style Selector="TabItem">
+            <Setter Property="FontSize" Value="15" />
+            <Setter Property="FontWeight" Value="SemiBold" />
+            <Setter Property="Padding" Value="0" />
+            <Setter Property="Margin" Value="0,0,8,0" />
+            <Setter Property="Width" Value="144" />
+            <Setter Property="Height" Value="46" />
+            <Setter Property="HorizontalContentAlignment" Value="Center" />
+            <Setter Property="VerticalContentAlignment" Value="Center" />
+            <Setter Property="Foreground" Value="#17325C" />
+            <Setter Property="Background" Value="#DCEAFF" />
+            <Setter Property="CornerRadius" Value="12" />
+        </Style>
+        <Style Selector="TabItem:pointerover">
+            <Setter Property="Foreground" Value="#17325C" />
+            <Setter Property="Background" Value="#DCEAFF" />
+        </Style>
+        <Style Selector="TabItem:selected">
+            <Setter Property="Foreground" Value="White" />
+            <Setter Property="Background" Value="#397EFA" />
+        </Style>
+        <Style Selector="TabItem:selected:pointerover">
+            <Setter Property="Foreground" Value="White" />
+            <Setter Property="Background" Value="#397EFA" />
+        </Style>
+        <Style Selector="TabItem:pointerover:not(:pressed) /template/ Border#PART_LayoutRoot">
+            <Setter Property="Background" Value="#DCEAFF" />
+            <Setter Property="TextElement.Foreground" Value="#17325C" />
+        </Style>
+        <Style Selector="TabItem:selected:pointerover:not(:pressed) /template/ Border#PART_LayoutRoot">
+            <Setter Property="Background" Value="#397EFA" />
+            <Setter Property="TextElement.Foreground" Value="White" />
+        </Style>
+        <Style Selector="TabItem:pressed /template/ Border#PART_LayoutRoot">
+            <Setter Property="Background" Value="#DCEAFF" />
+            <Setter Property="TextElement.Foreground" Value="#17325C" />
+        </Style>
+        <Style Selector="TabItem:selected:pressed /template/ Border#PART_LayoutRoot">
+            <Setter Property="Background" Value="#397EFA" />
+            <Setter Property="TextElement.Foreground" Value="White" />
+        </Style>
+        <Style Selector="TabItem:selected /template/ Border#PART_SelectedPipe">
+            <Setter Property="IsVisible" Value="False" />
+        </Style>
+        <Style Selector="Border.release-card">
+            <Setter Property="Background" Value="#F7FAFF" />
+            <Setter Property="BorderBrush" Value="White" />
+            <Setter Property="BorderThickness" Value="1" />
+            <Setter Property="CornerRadius" Value="16" />
+            <Setter Property="Padding" Value="18" />
+        </Style>
+        <Style Selector="Button">
+            <Setter Property="HorizontalContentAlignment" Value="Center" />
+            <Setter Property="VerticalContentAlignment" Value="Center" />
+        </Style>
+        <Style Selector="Button.primary-action">
+            <Setter Property="Background" Value="#397EFA" />
+            <Setter Property="Foreground" Value="White" />
+            <Setter Property="BorderThickness" Value="0" />
+            <Setter Property="CornerRadius" Value="8" />
+            <Setter Property="Padding" Value="14,7" />
+            <Setter Property="MinHeight" Value="34" />
+            <Setter Property="FontWeight" Value="SemiBold" />
+        </Style>
+        <Style Selector="Button.primary-action:pointerover:not(:pressed) /template/ ContentPresenter#PART_ContentPresenter">
+            <Setter Property="Background" Value="#397EFA" />
+            <Setter Property="Foreground" Value="White" />
+            <Setter Property="BorderBrush" Value="Transparent" />
+        </Style>
+        <Style Selector="Button.quiet-action">
+            <Setter Property="Background" Value="#E7EFFD" />
+            <Setter Property="Foreground" Value="#2555A0" />
+            <Setter Property="BorderThickness" Value="0" />
+            <Setter Property="CornerRadius" Value="8" />
+            <Setter Property="Padding" Value="12,7" />
+            <Setter Property="MinHeight" Value="34" />
+        </Style>
+        <Style Selector="Button.quiet-action:pointerover:not(:pressed) /template/ ContentPresenter#PART_ContentPresenter">
+            <Setter Property="Background" Value="#E7EFFD" />
+            <Setter Property="Foreground" Value="#2555A0" />
+            <Setter Property="BorderBrush" Value="Transparent" />
+        </Style>
+        <Style Selector="TextBox.release-input">
+            <Setter Property="Background" Value="White" />
+            <Setter Property="BorderBrush" Value="#C8D9F4" />
+            <Setter Property="CornerRadius" Value="8" />
+            <Setter Property="MinHeight" Value="34" />
+        </Style>
+        <Style Selector="ComboBox.release-input">
+            <Setter Property="Background" Value="White" />
+            <Setter Property="BorderBrush" Value="#C8D9F4" />
+            <Setter Property="CornerRadius" Value="8" />
+            <Setter Property="MinHeight" Value="34" />
+        </Style>
+        <Style Selector="ComboBox.release-input:pointerover /template/ Border#Background">
+            <Setter Property="Background" Value="White" />
+            <Setter Property="BorderBrush" Value="#C8D9F4" />
+        </Style>
+        <Style Selector="ListBox.release-list">
+            <Setter Property="FontSize" Value="14" />
+            <Setter Property="Background" Value="White" />
+        </Style>
+        <Style Selector="ListBox.release-list ListBoxItem">
+            <Setter Property="Padding" Value="0" />
+            <Setter Property="Margin" Value="0" />
+            <Setter Property="MinHeight" Value="0" />
+            <Setter Property="BorderThickness" Value="0" />
+            <Setter Property="Background" Value="Transparent" />
+        </Style>
+        <Style Selector="ListBox.release-list ListBoxItem:pointerover /template/ ContentPresenter#PART_ContentPresenter">
+            <Setter Property="Background" Value="Transparent" />
+        </Style>
+        <Style Selector="ListBox.release-list ListBoxItem:pressed /template/ ContentPresenter#PART_ContentPresenter">
+            <Setter Property="Background" Value="Transparent" />
+        </Style>
+        <Style Selector="ListBox.release-list ListBoxItem:selected /template/ ContentPresenter#PART_ContentPresenter">
+            <Setter Property="Background" Value="#D6E7FF" />
+        </Style>
+        <Style Selector="ListBox.release-list ListBoxItem:selected:not(:focus) /template/ ContentPresenter#PART_ContentPresenter">
+            <Setter Property="Background" Value="#D6E7FF" />
+        </Style>
+        <Style Selector="ListBox.release-list ListBoxItem:selected:pointerover /template/ ContentPresenter#PART_ContentPresenter">
+            <Setter Property="Background" Value="#D6E7FF" />
+        </Style>
+        <Style Selector="ListBox.release-list ListBoxItem:selected:pressed /template/ ContentPresenter#PART_ContentPresenter">
+            <Setter Property="Background" Value="#D6E7FF" />
+        </Style>
+        <Style Selector="TreeView.release-tree TreeViewItem">
+            <Setter Property="MinHeight" Value="24" />
+            <Setter Property="Background" Value="Transparent" />
+        </Style>
+        <Style Selector="TreeView.release-tree TreeViewItem:pointerover /template/ Border#PART_LayoutRoot">
+            <Setter Property="Background" Value="Transparent" />
+        </Style>
+        <Style Selector="TreeView.release-tree TreeViewItem:pressed /template/ Border#PART_LayoutRoot">
+            <Setter Property="Background" Value="Transparent" />
+        </Style>
+        <Style Selector="TreeView.release-tree TreeViewItem:selected /template/ Border#PART_LayoutRoot">
+            <Setter Property="Background" Value="Transparent" />
+        </Style>
+        <Style Selector="TreeView.release-tree TreeViewItem:selected:pointerover /template/ Border#PART_LayoutRoot">
+            <Setter Property="Background" Value="Transparent" />
+        </Style>
+        <Style Selector="TreeView.release-tree TreeViewItem:selected:pressed /template/ Border#PART_LayoutRoot">
+            <Setter Property="Background" Value="Transparent" />
+        </Style>
+        <Style Selector="TextBlock.change-added">
+            <Setter Property="Foreground" Value="ForestGreen" />
+        </Style>
+        <Style Selector="TextBlock.change-modified">
+            <Setter Property="Foreground" Value="DodgerBlue" />
+        </Style>
+        <Style Selector="TextBlock.change-deleted">
+            <Setter Property="Foreground" Value="Crimson" />
+        </Style>
+    </Window.Styles>
+    <TabControl x:Name="MainTabs" Margin="14" Padding="0" Background="Transparent">
+        <TabItem x:Name="LaunchTab" Header="Launch">
+            <Border Classes="release-card" CornerRadius="20" Margin="0,10,0,0">
+                <StackPanel Spacing="16">
+                    <TextBlock Text="Launch" FontSize="27" FontWeight="Bold" Foreground="#122D57" />
+                    <TextBlock Text="Check the latest version and download updates" Foreground="#6980AA" />
+                    <StackPanel Orientation="Horizontal" Spacing="10">
+                        <Button Classes="quiet-action" Content="Check Latest Version" Click="Check_OnClick" />
+                        <Button Classes="primary-action" Content="Download Update" Click="Get_OnClick" />
+                    </StackPanel>
+                    <TextBlock x:Name="UpdateStatus" Text="Check for or download an update." TextWrapping="Wrap" Foreground="#335481" />
+                </StackPanel>
+            </Border>
+        </TabItem>
+        <TabItem x:Name="PublishTab" Header="Publish">
+            <ScrollViewer Margin="0,10,0,0" VerticalScrollBarVisibility="Auto">
+                <Border CornerRadius="20" Padding="24" BorderBrush="#FFFFFF" BorderThickness="1"
+                        Width="850" HorizontalAlignment="Left">
+                    <Border.Background>
+                        <LinearGradientBrush StartPoint="0%,0%" EndPoint="100%,100%">
+                            <GradientStop Color="#F7FAFF" Offset="0" />
+                            <GradientStop Color="#DDEBFF" Offset="1" />
+                        </LinearGradientBrush>
+                    </Border.Background>
+                    <StackPanel Spacing="16">
+                        <Border Background="#F7FAFF" BorderBrush="White" BorderThickness="1"
+                                CornerRadius="14" Padding="16,12">
+                            <Grid ColumnDefinitions="*,*,*,*" ColumnSpacing="12">
+                                <StackPanel Grid.Column="0" Orientation="Horizontal" Spacing="8">
+                                    <Border Width="36" Height="36" CornerRadius="18" Background="#D9E8FF"
+                                            BorderBrush="#AFCDFC" BorderThickness="1">
+                                        <TextBlock Text="1" FontSize="18" FontWeight="Bold" Foreground="#397EFA"
+                                                   HorizontalAlignment="Center" VerticalAlignment="Center" />
+                                    </Border>
+                                    <StackPanel VerticalAlignment="Center">
+                                        <TextBlock Text="Select Version" FontWeight="SemiBold" Foreground="#17325C" />
+                                        <TextBlock Text="Select or create a version" FontSize="11" Foreground="#7188B0" />
+                                    </StackPanel>
+                                </StackPanel>
+                                <StackPanel Grid.Column="1" Orientation="Horizontal" Spacing="8">
+                                    <Border Width="36" Height="36" CornerRadius="18" Background="#D9E8FF"
+                                            BorderBrush="#AFCDFC" BorderThickness="1">
+                                        <TextBlock Text="2" FontSize="18" FontWeight="Bold" Foreground="#397EFA"
+                                                   HorizontalAlignment="Center" VerticalAlignment="Center" />
+                                    </Border>
+                                    <StackPanel VerticalAlignment="Center">
+                                        <TextBlock Text="Set Platform" FontWeight="SemiBold" Foreground="#17325C" />
+                                        <TextBlock Text="Choose target OS and arch" FontSize="11" Foreground="#7188B0" />
+                                    </StackPanel>
+                                </StackPanel>
+                                <StackPanel Grid.Column="2" Orientation="Horizontal" Spacing="8">
+                                    <Border Width="36" Height="36" CornerRadius="18" Background="#D9E8FF"
+                                            BorderBrush="#AFCDFC" BorderThickness="1">
+                                        <TextBlock Text="3" FontSize="18" FontWeight="Bold" Foreground="#397EFA"
+                                                   HorizontalAlignment="Center" VerticalAlignment="Center" />
+                                    </Border>
+                                    <StackPanel VerticalAlignment="Center">
+                                        <TextBlock Text="Build Package" FontWeight="SemiBold" Foreground="#17325C" />
+                                        <TextBlock Text="Select changed files" FontSize="11" Foreground="#7188B0" />
+                                    </StackPanel>
+                                </StackPanel>
+                                <StackPanel Grid.Column="3" Orientation="Horizontal" Spacing="8">
+                                    <Border Width="36" Height="36" CornerRadius="18" Background="#D9E8FF"
+                                            BorderBrush="#AFCDFC" BorderThickness="1">
+                                        <TextBlock Text="4" FontSize="18" FontWeight="Bold" Foreground="#397EFA"
+                                                   HorizontalAlignment="Center" VerticalAlignment="Center" />
+                                    </Border>
+                                    <StackPanel VerticalAlignment="Center">
+                                        <TextBlock Text="Publish" FontWeight="SemiBold" Foreground="#17325C" />
+                                        <TextBlock Text="Upload to the server" FontSize="11" Foreground="#7188B0" />
+                                    </StackPanel>
+                                </StackPanel>
+                            </Grid>
+                        </Border>
+
+                        <Grid ColumnDefinitions="215,215,340" ColumnSpacing="14" HorizontalAlignment="Left">
+                            <Border Grid.Column="0" Classes="release-card">
+                                <StackPanel Spacing="9">
+                                    <TextBlock Text="1. Select Version" FontSize="16" FontWeight="Bold" Foreground="#183969" />
+                                    <ListBox x:Name="VersionList" Classes="release-list" SelectionChanged="VersionList_OnSelectionChanged"
+                                             BorderBrush="#C8D9F4" BorderThickness="1" Height="180" Width="170"
+                                             Padding="0" HorizontalAlignment="Left">
+                                        <ListBox.ItemTemplate>
+                                            <DataTemplate x:DataType="updater:ReleaseChoice">
+                                                <TextBlock Text="{Binding Name}" Height="24" Padding="8,0" VerticalAlignment="Center" />
+                                            </DataTemplate>
+                                        </ListBox.ItemTemplate>
+                                    </ListBox>
+                                    <TextBox x:Name="NewVersionName" Classes="release-input" PlaceholderText="Version number"
+                                             Width="170" HorizontalAlignment="Left" />
+                                    <Grid ColumnDefinitions="*,*" ColumnSpacing="8" Width="170" HorizontalAlignment="Left">
+                                        <Button Grid.Column="0" Classes="primary-action" Content="New"
+                                                Click="CreateVersion_OnClick" HorizontalAlignment="Stretch" />
+                                        <Button Grid.Column="1" Classes="quiet-action" Content="Delete"
+                                                Click="DeleteVersions_OnClick" HorizontalAlignment="Stretch" />
+                                    </Grid>
+                                    <Button Classes="quiet-action" Content="Refresh" Click="RefreshVersions_OnClick"
+                                            Width="170" HorizontalAlignment="Left" />
+                                </StackPanel>
+                            </Border>
+
+                            <Border Grid.Column="1" Classes="release-card">
+                                <StackPanel Spacing="9">
+                                    <TextBlock Text="2. Configure Platform" FontSize="16" FontWeight="Bold" Foreground="#183969" />
+                                    <ListBox x:Name="PlatformList" Classes="release-list" SelectionChanged="PlatformList_OnSelectionChanged"
+                                             BorderBrush="#C8D9F4" BorderThickness="1" Height="180" Width="170"
+                                             Padding="0" HorizontalAlignment="Left">
+                                        <ListBox.ItemTemplate>
+                                            <DataTemplate x:DataType="updater:ReleaseChoice">
+                                                <TextBlock Text="{Binding Name}" Height="24" Padding="8,0" VerticalAlignment="Center" />
+                                            </DataTemplate>
+                                        </ListBox.ItemTemplate>
+                                    </ListBox>
+                                    <StackPanel Spacing="4" Width="170" HorizontalAlignment="Left">
+                                        <TextBlock Text="Operating system" FontSize="11" Foreground="#7188B0" />
+                                        <ComboBox x:Name="TargetOS" Classes="release-input" HorizontalAlignment="Stretch" />
+                                    </StackPanel>
+                                    <StackPanel Spacing="4" Width="170" HorizontalAlignment="Left">
+                                        <TextBlock Text="Architecture" FontSize="11" Foreground="#7188B0" />
+                                        <ComboBox x:Name="TargetArch" Classes="release-input" HorizontalAlignment="Stretch" />
+                                    </StackPanel>
+                                    <Grid ColumnDefinitions="*,*" ColumnSpacing="8" Width="170" HorizontalAlignment="Left">
+                                        <Button Grid.Column="0" Classes="primary-action" Content="New"
+                                                Click="CreatePlatform_OnClick" HorizontalAlignment="Stretch" />
+                                        <Button Grid.Column="1" Classes="quiet-action" Content="Delete"
+                                                Click="DeletePlatforms_OnClick" HorizontalAlignment="Stretch" />
+                                    </Grid>
+                                </StackPanel>
+                            </Border>
+
+                            <Border Grid.Column="2" Classes="release-card">
+                                <StackPanel Spacing="9">
+                                    <Grid ColumnDefinitions="*,Auto" ColumnSpacing="6">
+                                        <TextBlock x:Name="SelectedContext" Text="Changed Files · Select a version and platform"
+                                                   FontSize="16" FontWeight="Bold" Foreground="#183969" TextTrimming="CharacterEllipsis" />
+                                        <TextBlock x:Name="ScanIndicator" Grid.Column="1" Text="⏳" IsVisible="False"
+                                                   ToolTip.Tip="Scanning changed files" />
+                                    </Grid>
+                                    <TreeView x:Name="ChangeTree" Classes="release-tree" FontSize="14"
+                                              Background="White" BorderBrush="#C8D9F4" BorderThickness="1" Height="180" Width="290"
+                                              Padding="0" HorizontalAlignment="Left">
+                                        <TreeView.Resources>
+                                            <x:Double x:Key="CheckBoxMinHeight">24</x:Double>
+                                        </TreeView.Resources>
+                                        <TreeView.ItemTemplate>
+                                            <TreeDataTemplate x:DataType="updater:ReleaseFileNode" ItemsSource="{Binding Children}">
+                                                <CheckBox IsChecked="{Binding Selected, Mode=OneWay}" IsThreeState="True"
+                                                          Click="ChangeSelection_OnClick" Height="24" MinHeight="0"
+                                                          Padding="2,0" Margin="0" VerticalAlignment="Center"
+                                                          VerticalContentAlignment="Center">
+                                                    <TextBlock Text="{Binding Name}" VerticalAlignment="Center"
+                                                               Classes.change-added="{Binding IsAdded}"
+                                                               Classes.change-modified="{Binding IsModified}"
+                                                               Classes.change-deleted="{Binding IsDeleted}" />
+                                                </CheckBox>
+                                            </TreeDataTemplate>
+                                        </TreeView.ItemTemplate>
+                                    </TreeView>
+                                    <Button Classes="quiet-action" Content="Rescan Changes" Click="Scan_OnClick"
+                                            Width="290" HorizontalAlignment="Left" />
+                                    <TextBlock Text="Green: added · Blue: modified · Red: deleted" FontSize="11" Foreground="#7387A9" />
+                                </StackPanel>
+                            </Border>
+                        </Grid>
+
+                        <Grid ColumnDefinitions="*,*" ColumnSpacing="14">
+                            <Border Grid.Column="0" Classes="release-card">
+                                <Grid ColumnDefinitions="*,Auto" ColumnSpacing="12">
+                                    <StackPanel Grid.Column="0" Spacing="6" VerticalAlignment="Center">
+                                        <TextBlock Text="3. Build Packages" FontSize="16" FontWeight="Bold" Foreground="#183969" />
+                                        <TextBlock Text="Upgrade: selected changes · Full: source files" FontSize="12" Foreground="#7387A9" />
+                                        <StackPanel Orientation="Horizontal" Spacing="12">
+                                            <CheckBox x:Name="BuildUpgrade" Content="Upgrade package" IsChecked="True"
+                                                      Click="PackageOptions_OnClick" />
+                                            <CheckBox x:Name="BuildFull" Content="Full package" Click="PackageOptions_OnClick" />
+                                        </StackPanel>
+                                    </StackPanel>
+                                    <Button x:Name="PackageButton" Grid.Column="1" Classes="primary-action"
+                                            Content="Build" Click="Package_OnClick" VerticalAlignment="Center" />
+                                </Grid>
+                            </Border>
+                            <Border Grid.Column="1" Classes="release-card">
+                                <StackPanel Spacing="10">
+                                    <Grid ColumnDefinitions="*,Auto,Auto" ColumnSpacing="8">
+                                        <StackPanel Grid.Column="0" Spacing="6">
+                                            <TextBlock Text="4. Publish Update" FontSize="16" FontWeight="Bold" Foreground="#183969" />
+                                            <TextBlock Text="Upload package and release page" FontSize="12" Foreground="#7387A9" />
+                                        </StackPanel>
+                                        <Button Grid.Column="1" Classes="quiet-action" Content="Preview"
+                                                Click="Preview_OnClick" VerticalAlignment="Center" />
+                                        <Button x:Name="PublishButton" Grid.Column="2" Classes="primary-action"
+                                                Content="Publish" IsEnabled="False" Click="Publish_OnClick" VerticalAlignment="Center" />
+                                    </Grid>
+                                    <StackPanel Orientation="Horizontal" Spacing="18">
+                                        <CheckBox x:Name="ShowHistory" Content="Show version history" IsChecked="True" />
+                                    </StackPanel>
+                                </StackPanel>
+                            </Border>
+                        </Grid>
+
+                        <Border Background="#E5EFFF" CornerRadius="10" Padding="12,9">
+                            <StackPanel Spacing="7">
+                                <TextBlock x:Name="ReleaseStatus" Text="Select a version and platform." Foreground="#315888"
+                                           TextWrapping="Wrap" />
+                                <ProgressBar x:Name="ReleaseProgress" Height="3" IsIndeterminate="True"
+                                             IsVisible="False" Foreground="#397EFA" />
+                            </StackPanel>
+                        </Border>
+                    </StackPanel>
+                </Border>
+            </ScrollViewer>
+        </TabItem>
+    </TabControl>
+</Window>

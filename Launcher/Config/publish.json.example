@@ -1,0 +1,13 @@
+{
+  "releasesDirectory": "Releases",
+  "sourceDirectory": ".",
+  "platformSources": {},
+  "excludePaths": [ "Releases", "release", "Config", "Data", "Logs", "runtimes" ],
+  "releaseEndpoint": "",
+  "cosBucketURL": "",
+  "secretID": "",
+  "secretKey": "",
+  "sessionToken": "",
+  "showHistory": true,
+  "indexTitle": "Swainle Launcher Downloads"
+}
