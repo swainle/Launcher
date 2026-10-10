@@ -1,14 +1,59 @@
 # Launcher
 
-可执行文件旁的 `Config/launcher.json` 用于启动页，配置 `releaseEndpoint`；`Config/publish.json` 用于发布页。对应文件存在时显示相应标签页，两个文件可独立使用。
+Launcher 是桌面应用程序。它检查和下载更新，也构建和发布更新包。发布目标是腾讯云对象存储（COS）。
 
-发布功能位于“版本发布”标签页。先编辑可执行文件旁的 `Config/publish.json`，配置 `releasesDirectory`、发布地址及 COS 参数。`indexTitle` 设置索引页的浏览器标题和页面标题。默认扫描可执行文件所在目录；如需覆盖，可设置 `sourceDirectory` 或在 `platformSources` 中按 `windows/amd64` 指定平台源目录。目录可以写成相对可执行文件的路径。`excludePaths` 列出相对扫描目录的文件或目录，默认忽略 `Config`、`Data`、`Logs`、`runtimes`、`Releases` 和下载缓存 `release`；目录项会连同子目录一起排除。`Config` 和扫描目录内的本地 `Releases` 始终排除。配置文件在构建和发布时按“较新则复制”处理。
+## 构建
 
-界面按版本、平台、变更文件三列操作。点击版本和平台行即可选中，背景色标出当前选择。选定版本和平台后扫描差异，勾选文件并点击“新建更新包”。未勾选的变更不会进入包，也不会改变该版本的文件索引。之后点击“发布更新包”。
+安装 .NET 10 SDK。然后运行：
 
-新建版本输入框默认建议最高数字版本的末段加 1。版本和平台下方的删除按钮会列出当前选中的未发布项供确认；已发布项及仍被后续更新包依赖的项不能删除。删除只影响本地 `Releases`，不会删除 COS 对象。
+```sh
+dotnet build Launcher/Launcher.csproj
+```
 
-每个版本使用以下目录结构：
+运行发布流程自检：
+
+```sh
+dotnet run --project UpdaterTests/UpdaterTests.csproj
+```
+
+## 配置页面
+
+将配置文件放在可执行文件旁的 `Config` 目录中。
+
+- 如需显示启动页面，添加 `Config/launcher.json`。将 `releaseEndpoint` 设为发布目录的 HTTPS 地址。
+- 如需显示发布页面，添加 `Config/publish.json`。设置 `releaseEndpoint`、`cosBucketURL`、`secretID` 和 `secretKey`。如果 COS 凭据需要临时令牌，也设置 `sessionToken`。
+
+两个页面分别读取自己的配置文件。构建时，如果源配置文件较新，构建工具就将其复制到输出目录。
+
+在发布配置中，`releasesDirectory` 指定本地输出目录。默认值是 `Releases`。`sourceDirectory` 指定打包文件所在的目录。默认值是可执行文件所在的目录。如需为某个平台指定不同的源目录，在 `platformSources` 中添加条目。键的格式如 `windows/amd64`。相对路径以可执行文件所在的目录为起点。
+
+`excludePaths` 列出扫描时要排除的路径。默认值是 `Releases`、`release`、`Config`、`Data`、`Logs` 和 `runtimes`。排除一个目录时，也排除其中的文件。扫描始终排除 `Config` 和本地 `Releases` 目录。`indexTitle` 指定发布页标题。`showHistory` 控制发布页是否显示历史版本。
+
+## 下载更新
+
+1. 打开启动页面。
+2. 单击 **Check Latest Version**，查看最新稳定版本。
+3. 单击 **Download Update**，下载并校验更新。
+
+Launcher 将下载的文件放在可执行文件旁的 `release/current/<os>/<arch>` 目录中。只有本地版本是发布索引中的上一版本时，才能应用更新。
+
+## 构建并发布版本
+
+1. 打开发布页面。输入版本号，例如 `v0.1.3`。单击版本栏中的 **New**。
+2. 选择操作系统和架构。单击平台栏中的 **New**。
+3. 选择版本和平台。Launcher 将扫描源目录。源文件变化后，单击 **Rescan Changes**。
+4. 勾选要放入升级包的变更文件。不需要的变更保持未勾选。
+5. 勾选 **Upgrade package**、**Full package**，或同时勾选两项。升级包包含勾选的变更。完整包包含源文件。
+6. 单击 **Build**。Launcher 将生成 ZIP 文件和本地发布页。
+7. 单击 **Preview**，检查发布页。然后单击 **Publish**，上传选定的包。
+
+构建升级包时，至少要勾选一项变更。构建完整包时，不使用变更文件的勾选结果。发布升级包会更新 `channels/stable.json`。只发布完整包不会改变稳定版频道。
+
+如需删除草稿版本或平台，先选择该项，再单击 **Delete**。应用程序会要求确认。已发布的项目不能删除。后续更新依赖的项目也不能删除。删除操作只影响本地 `Releases` 目录，不会删除 COS 对象。
+
+## 发布文件
+
+Launcher 按以下结构保存发布文件：
 
 ```text
 Releases/
@@ -17,10 +62,9 @@ Releases/
   v0.1.3/
     manifest.json
     upgrade/windows/amd64/files/{path}
+    full/windows/amd64/files/{path}
+    archives/windows/amd64/upgrade.zip
+    archives/windows/amd64/full.zip
 ```
 
-`manifest.json` 的 `inventory` 保存本版全部文件的路径、大小及 SHA-256；更新包的 `files` 只保存变更文件，`deleted` 记录删除路径。上一版本由版本顺序确定。`index.json` 保存发布索引，`index.html` 展示当前稳定版；历史版本和变更清单可选显示。发布时只上传选定平台的更新包，并合并远端同版本清单，最后更新 `channels/stable.json`。下载更新时，本地版本必须与索引中的上一版本一致。
-
-代码按职责划分为 `VersionService`（版本与清单）、`PackageService`（扫描与打包）、`ReleaseIndexService`（本地索引和页面）、`PublishService`（发布到 COS）和 `UpdateService`（检查与下载更新）。打包完成后，界面调用索引服务生成发布页。
-
-构建：`dotnet build Launcher/Launcher.csproj`。发布流程自检：`dotnet run --project UpdaterTests/UpdaterTests.csproj`。
+`manifest.json` 记录一个版本的文件。`inventory` 记录每个文件的路径、大小和 SHA-256 值。升级包中的 `files` 记录变更文件。`deleted` 记录删除的路径。`index.json` 记录发布索引。`index.html` 是发布页。
